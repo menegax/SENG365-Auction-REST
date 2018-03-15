@@ -2,12 +2,26 @@ const Auction = require('../models/auction.server.model');
 
 //view auctions, sorted from most recent to least recent
 exports.list = function(req, res){
-    return null;
+    Auction.getAll(function(result) {
+        res.json(result);
+    });
 };
 
 //create auction
-exports.create = function(req, res){
-    return null;
+exports.create = function(req, res) {
+    let auction_data = {
+        "auction_title": req.body.auction_title
+    };
+
+    let title = auction_data['auction_title'].toString();
+
+    let values = [
+        [auction_title]
+    ];
+
+    Auction.insert(values, function(result) {
+        res.json(result);
+    });
 };
 
 //view auction details

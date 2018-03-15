@@ -9,4 +9,4 @@ module.exports = function() {
     require('../app/routes/auction.server.routes.js')(app);
 
     return app;
-}
+};

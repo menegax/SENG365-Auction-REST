@@ -2,12 +2,22 @@ const db = require('../../config/db');
 
 //view auctions, sorted from most recent to least recent
 exports.getAll = function(done) {
-    return null;
+    db.get_pool().query('SELECT * FROM auction', function(err, rows) {
+        if (err) return done({"ERROR": "Error selecting"});
+
+        return done(rows);
+    })
 };
 
 //create auction
-exports.insert = function(done) {
-    return null;
+exports.insert = function(auction_title, done) {
+    let values = [auction_title];
+
+    db.get_pool().query('INSERT INTO auction (auction_title) VALUES ?', values, function(err, result) {
+        if (err) return done(err);
+
+        done(result);
+    });
 };
 
 //view auction details

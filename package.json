@@ -4,6 +4,8 @@
   "scripts": {
     "start": "node server.js"
   },
+  "aucthor": "Joshua Meneghini <jam357@uclive.ac.nz",
+  "main": "server.js",
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",

@@ -12,4 +12,4 @@ module.exports = function(app) {
     app.route('/api/v1/auctions/:auctionId/bids')
         .get(auctions.history)
         .post(auctions.bid);
-}
+};
