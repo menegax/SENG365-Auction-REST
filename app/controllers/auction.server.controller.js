@@ -10,13 +10,18 @@ exports.list = function(req, res){
 //create auction
 exports.create = function(req, res) {
     let auction_data = {
-        "auction_title": req.body.auction_title
+        "categoryId": req.body.categoryId,
+        "title": req.body.title
     };
 
-    let title = auction_data['auction_title'].toString();
+    let auction_categoryid = auction_data['categoryId'];
+    let auction_title = auction_data['title'];
+
+    console.log(auction_categoryid);
+    console.log(auction_title);
 
     let values = [
-        [auction_title]
+        [auction_categoryid, auction_title]
     ];
 
     Auction.insert(values, function(result) {
@@ -26,7 +31,10 @@ exports.create = function(req, res) {
 
 //view auction details
 exports.read = function(req, res){
-    return null;
+    let id= req.params.auctionId;
+    Auction.getOne(id, function(result){
+        res.json(result);
+    });
 };
 
 //change some selected information about an Auction
@@ -36,7 +44,10 @@ exports.update = function(req, res){
 
 //view bid history
 exports.history = function(req, res){
-    return null;
+    let id= req.params.auctionId;
+    Auction.view(id, function(result){
+        res.json(result);
+    });
 };
 
 //make bid on auction
