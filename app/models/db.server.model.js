@@ -1,7 +1,5 @@
-const db = require('../config/db'),
+const db = require('../../config/db'),
     fs = require('fs');
-
-const resampleSQL = path.join('./load_data.sql');
 
 //resets all tables and recreates
 exports.clearTables = function(done) {
@@ -14,8 +12,14 @@ exports.clearTables = function(done) {
 
 //uses sample sql script to fill tables with sample
 exports.sampleData = function(done) {
-    return null;
-}
+    let sql = fs.readFileSync('load_data.sql').toString();
+    db.get_pool().query(sql, function(err, rows) {
+        if (err) return done(err);
+        return done("SUCCESSFULLY resampled database");
+    });
+};
+
+
 
 
 
@@ -41,5 +45,9 @@ exports.sampleData = function(done) {
 //
 // //uses sample sql script to fill tables with sample
 // exports.sampleData = function(done) {
-//
-// }
+//     let readQuery = fs.readFileSync(resampleSQL, 'utf8');
+//     db.get_pool().query(readQuery, function(err, rows) {
+//         if (err) return done (err);
+//         return done(rows);
+//     });
+// };
