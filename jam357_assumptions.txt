@@ -36,7 +36,7 @@ such as that a username is a string.
 
 
 [!!NOT!!] #PHOTOS#
-[DONE] GET /auctions/{id}/photos    -
+[DONE] GET /auctions/{id}/photos    - Assuming that //images// to get to my images directory is okay (as I implemented it on windows and not linux) if it is being tested on linux, the path would be /images/
 
 [!!NOT!!] POST /auctions/{id}/photos   - Assuming that user must delete photo before posting a new photo if there is already
                                     a photo associated with the auction
