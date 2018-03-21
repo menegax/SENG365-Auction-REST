@@ -1,0 +1,66 @@
+jam357 Assumptions:
+
+#GENERAL#
+- Assuming that all body, parameters, headers, and queries in the URI are in the correct format and that I do not have to check them,
+such as that a username is a string.
+
+[DONE] #DATABASE#
+[DONE] POST /reset                 - Assuming reset is never a bad request
+
+[DONE] POST /resample              - Assuming reset is always done before resample
+
+[!!NOT!!] #USERS#
+[!!NOT!!] POST /users               - Assuming that you do not have to be an authorized user to create a new user
+                                    - Assuming that duplicate users will never be made
+
+[DONE] POST /users/login            - If you provide the correct username and password but incorrect email (ie all three
+                                    fields are parsed but email which is not required is incorrect), then you will successfully
+                                    be logged in. Same if the email is correct but username is not. If password is incorrect
+                                    (even with correct username and email, then the login fails with a 400 "Invalid
+                                    username/email/password supplied" error.
+                                    - Only one user is assumed to be logged in (i.e a user will log out before another user
+                                    can log in).
+
+[DONE] POST /users/logout           - If you try log out with the incorrect authorization code, you are prompted with an
+                                    401 "Unauthorized" error.
+
+[DONE] GET /users/{id}              - Assuming in the API this does not ask for a 404, "Not found" error, if no users are
+                                    logged on, they can still access their username, givenName and familyName. If superman
+                                    is logged on wanting to view his own details, he gets the email and accountBalance on
+                                    top of the 3 details stated earlier. If superman is not logged on but wants his own
+                                    details, there is no verification so he only gets the first 3 details. If superman is
+                                    logged on but wants batmans details, he gets only the first three details again.
+
+[DONE] PATCH /users/{id}            -Assuming that if there are no valid values parsed in the request body, a 400 "Malformed
+                                    request" error is returned
+
+
+[!!NOT!!] #PHOTOS#
+[DONE] GET /auctions/{id}/photos    -
+
+[!!NOT!!] POST /auctions/{id}/photos   - Assuming that user must delete photo before posting a new photo if there is already
+                                    a photo associated with the auction
+                                    - Assuming that you can only add 1 photo to the auction (i.e the auction cannot have
+                                    a png and a jpeg image associated with it.
+                                    - Assuming you have to be the seller (and logged in) to post a new photo to an auction
+                                    - The Content-type header is correct relative to the image file you are uploading
+
+[!!NOT!!] DELETE /auctions/{id}/photos - Assuming that you have to be the seller (and logged in) to delete the photo from
+                                    the auction
+                                    - Assuming that delete photos is done before resetting and resampling so that the photo
+                                    is not left on the local host after resetting and resampling.
+                                    - Assuming that the date is a valid date/time so I do not have to check that
+
+
+[!!NOT!!] #AUCTIONS#
+[!!NOT!!] GET /auctions                       -
+
+[!!NOT!!] POST /auctions                      -
+
+[DONE] GET /auctions{id}
+
+[!!NOT!!] PATCH /auctions/{id}
+
+[DONE] GET /auctions/{id}/bids
+
+[DONE] POST /auctions/{id}/bids       - Assuming you can bid on your own auction

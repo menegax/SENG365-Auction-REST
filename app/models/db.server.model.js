@@ -15,7 +15,7 @@ exports.sampleData = function(done) {
     let sql = fs.readFileSync('load_data.sql').toString();
     db.get_pool().query(sql, function(err, rows) {
         if (err) return done(500, "Internal server error", err);
-        return done(200, "OK", {"SUCCESSFUL": "SUCCESSFULLY resampled database"});
+        return done(201, "OK", {"SUCCESSFUL": "SUCCESSFULLY resampled database"});
     });
 };
 
