@@ -9,10 +9,10 @@ db.connect(function(err) {
         console.log('Unable to connect to MySQL.');
         process.exit(1);
     } else {
-        app.listen(3003, function() {
-            console.log('Listening on port: ' + 3003);
+        app.listen(4941, function() {
+            console.log('Listening on port: ' + 4941);
         });
     }
 });
 
-console.log("http://127.0.0.1:3003/api/v1/auctions");
+console.log("http://127.0.0.1:4941/api/v1/auctions");

@@ -6,7 +6,7 @@ exports.retrieve = function(req, res){
     Photo.getOne(res, auctionId, function(statusCode, statusMessage, result) {
         res.status(statusCode);
         res.statusMessage = statusMessage;
-        res.sendFile(result);
+        res.json(result);
     });
 };
 

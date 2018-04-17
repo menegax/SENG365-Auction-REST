@@ -1,7 +1,10 @@
 const db = require('../../config/db');
 
 //create user with required fields
-exports.insert = function(user_data, done) {
+exports.insert = function(user_data, contains, done) {
+    if (contains === false) {
+        return done(400, "Malformed request", {"ERROR": "The user does not have valid email address or password"});
+    }
     let values = [user_data];
 
     db.get_pool().query('INSERT INTO auction_user (user_username, user_givenname, user_familyname, user_email, user_password) VALUES ?', values, function(err, result) {
@@ -133,6 +136,6 @@ exports.alter = function(auth, userId, username, givenName, familyName, email, p
         } else {
             return done(400, "Malformed request", {"ERROR": "No valid values in request"});
         }
-        return done(200, "OK", {"SUCCESSFUL": "Successfully updated user"});
+        return done(201, "OK", {"SUCCESSFUL": "Successfully updated user"});
     });
 };

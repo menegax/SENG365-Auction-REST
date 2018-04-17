@@ -17,11 +17,15 @@ exports.create = function(req, res){
     let user_email = user_data['email'];
     let user_password = user_data['password'];
 
+    let contains = user_email.includes("@");
+
+    if (contains === true) {contains = user_password.length > 0; }
+
     let values = [
         [user_username, user_givenname, user_familyname, user_email, user_password]
     ];
 
-    User.insert(values, function(statusCode, statusMessage, result) {
+    User.insert(values, contains, function(statusCode, statusMessage, result) {
         res.status(statusCode);
         res.statusMessage = statusMessage;
         res.json(result);

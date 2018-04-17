@@ -1,7 +1,7 @@
 const db = require('../../config/db'),
     fs = require('fs'),
     path = require('path'),
-    appDir = "\\images\\",
+    appDir = "/images/",
     filePath = path.dirname(require.main.filename);
 
 //get an auction photo
@@ -10,12 +10,11 @@ exports.getOne = function(res, auctionId, done) {
         if (err) return done(500, "Internal server error", err);
         db.get_pool().query(`SELECT photo_image_URI AS URI FROM photo WHERE photo_auctionid = "${auctionId}"`, function (err, rows) {
             if (err) return done(500, "Internal server error", err);
-            console.log(rows.length);
             if (rows.length !== 0) {
                 if (fs.existsSync(`./images/${auctionId}.png`)) {
-                    res.header('Content-type', 'image/png');
-                } else {
                     res.header('Content-type', 'image/jpeg');
+                } else {
+                    res.header('Content-type', 'image/png');
                 }
                 done(200, "OK", filePath + appDir + rows[0].URI);
             } else {
@@ -42,7 +41,7 @@ exports.insert = function(req, auctionId, contentType, auth, done) {
                 if (contentType === "image/jpeg") {
                     URI = `${auctionId}.jpeg`;
                 } else if (contentType = `image/png`) {
-                    URI = `${auctionId}.png`
+                    URI = `${auctionId}.png`;
                 }
                 db.get_pool().query(`INSERT INTO photo (photo_auctionid, photo_image_URI) VALUES (?, ?) ON DUPLICATE KEY UPDATE photo_image_URI = ?`,
                     [auctionId, URI, URI], function (err) {
@@ -78,7 +77,7 @@ exports.unpublish = function(auth, auctionId, done) {
                     try {
                         fs.unlink(filePath + appDir + rows[0].photo, function (err) {
                             if (err) return done(500, "Internal server error", err);
-                            done(200, "OK", {"SUCCESS": "Successful deletion"});
+                            done(201, "OK", {"SUCCESS": "Successful deletion"});
                         })
                     } catch (Exception) {
                         done(404, "Not found", {"ERROR": "No such file or directory"});

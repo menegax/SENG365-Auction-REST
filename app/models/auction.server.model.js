@@ -244,7 +244,7 @@ exports.alter = function(auth, id, auction_categoryid, auction_title, auction_de
             } else {
                 return done(400, "Malformed request", {"ERROR": "No valid values in request"});
             }
-            return done(200, "OK", {"SUCCESSFUL": "Successfully updated auction"});
+            return done(201, "OK", {"SUCCESSFUL": "Successfully updated auction"});
         });
     });
 };
@@ -260,14 +260,17 @@ exports.view = function(auctionId, done) {
 };
 
 //make bid on auction
-exports.make = function(auth, amount, bidTime, auctionId, done) {
+exports.make = function(auth, amount, bidTime, bidding, auctionId, done) {
     db.get_pool().query(`SELECT user_id AS id FROM auction_user WHERE user_token = "${auth}"`, function(err, result) {
         if (err) return done(500, "Internal server error", err);
         if (result.length === 0) return done(401, "Unauthorized.", {"ERROR": "You are unauthorized"});
         let userId = result[0].id;
         db.get_pool().query(`SELECT * FROM auction WHERE auction_id = "${auctionId}"`, function(err, rows){
             if (err) return done(500, "Internal server error", err);
+            console.log(rows.length);
+
             if (rows.length === 0) return done(404, "Not found", {"ERROR": "Could not find the auction with given auction id"});
+            // console.log("ENDINGDATE == " + rows[0].id.toString());
             db.get_pool().query(`SELECT MAX(FLOOR(bid_amount)) AS amount FROM bid WHERE bid_auctionid = "${auctionId}"`, function(err, result) {
                 if (err) return done(500, "Internal server error", err);
                 if (result.length === 0) {
@@ -291,7 +294,7 @@ exports.make = function(auth, amount, bidTime, auctionId, done) {
                 db.get_pool().query('INSERT INTO bid (bid_auctionid, bid_amount, bid_datetime, bid_userid) VALUES ?', values, function (err, result) {
                     if (err) return done(500, "Internal server error", err);
 
-                    done(200, "OK", {"SUCCESSFUL": "Successfully inserted bid"});
+                    done(201, "OK", {"SUCCESSFUL": "Successfully inserted bid"});
                 });
             });
         });

@@ -48,14 +48,17 @@ exports.create = function(req, res) {
 
     let create = new Date();
 
-    console.log(create);
     // create > auction_startTime ||
-    if (auction_startTime >= auction_endTime || auction_reservePrice < 0 || auction_startBid < 0) {
+    if (auction_startTime >= auction_endTime || auction_reservePrice < 0 || auction_startBid < 0 || auction_startTime == 0) {
         create = undefined;
     }
     let values = [
         [auction_categoryid, auction_title, auction_description, starting, ending, auction_reservePrice, auction_startBid]
     ];
+
+    // console.log("starting= " + starting);
+    //
+    // console.log("auction_startTime== " + auction_startTime);
 
     Auction.insert(auth, values, create, function(statusCode, statusMessage, result) {
         res.status(statusCode);
@@ -106,7 +109,6 @@ exports.update = function(req, res){
 
     let create = new Date();
 
-    console.log(create);
     // create > auction_startTime ||
     if (auction_startTime >= auction_endTime || auction_reservePrice < 0 || auction_startBid < 0) {
         create = undefined;
@@ -138,7 +140,7 @@ exports.bid = function(req, res){
     let dateTime = new Date();
     let bidTime = dateTime.toISOString();
 
-    Auction.make(auth, amount, bidTime, id, function(statusCode, statusMessage, result) {
+    Auction.make(auth, amount, bidTime, id, dateTime.getTime()/1000, function(statusCode, statusMessage, result) {
         res.status(statusCode);
         res.statusMessage = statusMessage;
         res.json(result);
