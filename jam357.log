@@ -1,0 +1,183 @@
+
+> seng3652018apitest@0.0.2 start /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1
+> mocha ./tests/assess.*.js --reporter spec --log-level=warn --timeout 15000
+
+
+
+  Test the database endpoints.
+    [Script: assess.0.database.js]
+    ✓ Should reset the database using /reset (54ms)
+    ✓ Should resample the database using /resample
+
+  Test successful creation of users.
+    [Script: assess.a.create.users.succeed.js]
+    ✓ Should return 201, and JSON with id of new user: Create user1, Emma Smith.
+    ✓ Should return 201, and JSON with id of new user: Create user2, Olivia Jones.
+    ✓ Should return 201, and JSON with id of new user: Create user3, Sophia Williams.
+    ✓ Should return 201, and JSON with id of new user: Create user4, Isabella Brown.
+    ✓ Should return 201, and JSON with id of new user: Create user5, Emily Davies.
+
+  Test malformed creation of users.
+    [Script: assess.b.create.users.fail.js]
+    ✓ Should return 4xx status code: Test for malformed email address on user11.
+    ✓ Should return 4xx status code: Test for duplicate username on user1.
+    ✓ Should return 4xx status code: Test for duplicate email address on user1.
+    ✓ Should return 4xx status code: Test for empty password on user11.
+
+  Test successful change (amendment) of users.
+    [Script: assess.c.change.users.succeed.js]
+    ✓ Should return 201 status code, changed givenName and familyName
+
+  Test unsuccessful change (amendment) of users.
+    [Script: assess.d.change.users.fail.js]
+    ✓ Should return 401 status code, as PATCH issued with no authorization
+    ✓ Should return 400 or 404 status code, as PATCH issued with no authorization
+
+  Test successful creation of auctions.
+    [Script: assess.e.create.auctions.succeed.js]
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell an underwater bat suit
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell Inspector Gadget's trench coat.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell a super cape.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell Mary Poppin's Umbrella (the blue and white one).
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell Mary Poppin's Other Umbrella (the red and white one).
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell the remnants of a Death Star.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell a winter palace at the north pole.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell a Broken Pyramid.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell an Intrinsic Field Subtractor.
+    ✓ Should return 201, and JSON with id of new auction: Create an auction to sell a cache of vibranium.
+
+  Test unsuccessful creation of auctions, with authenticated user.
+    [Script: assess.f.create.auctions.auth.fail.js]
+    ✓ Should return 400: Test for (no) category (category=0).
+    ✓ Should return 400: Test for incorrect category (category=6).
+    ✓ Should return 400: Test for endDateTime of 1 January 1970.
+    ✓ Should return 400: Test for startDateTime of 1 January 1970.
+    ✓ Should return 400: Test for startDatetime after endDateTime.
+    ✓ Should return 400: Test for no startDateTime
+    ✓ Should return 400: Test for no endDateTime
+    ✓ Should return 400: Test for null startDateTime
+    ✓ Should return 400: Test for null endDateTime
+    ✓ Should return 400: Test for null category 
+
+  Test unsuccessful creation of auctions, with NO authenticated user.
+    [Script: assess.g.create.auctions.unauth.fail.js]
+    ✓ Should return 400, and JSON with id of new auction: Test for no startDateTime
+
+  Test successful amendment (change) to auction.
+    [Script: assess.h.change.auctions.auth.succeed.js]
+    ✓ Should return 201, having changed the auction.
+
+  Test unsuccessful amendment (change) to auction, with unauthenticated user.
+    [Script: assess.i.change.auctions.unauth.fail.js]
+    ✓ Should return 401, having attempted to change an auction.
+
+  Test bidding for auctions.
+    [Script: assess.j.bids.js]
+    Make first bid.
+      ✓ Should return 201, with successful bid. (1999ms)
+    Make second bid.
+      ✓ Should return 201, with successful bid.
+    Make third bid
+      ✓ Should return 4xx, with unsuccessful bid.
+    Make fourth bid, after the endDatetime.
+      ✓ Should return 4xx, with unsuccessful bid.
+
+  Manage the photos (JPEG and PNG) of an auction.
+    [Script: assess.m.photos.success.js]
+    Tests for add (POST), get (GET) and delete (DELETE) a JPEG photo to the auction: POST /auction/id/photos.
+      ✓ Should POST a JPEG photo, returning 201.
+      1) Should GET a JPEG photo, returning 200.
+      ✓ Should DELETE a JPEG photo, returning 201.
+      2) Should GET default photo, returning 200.
+    Tests for add (POST), get (GET) and delete (DELETE) a PNG photo to the auction: POST /auction/id/photos.
+      ✓ Should POST a PNG photo, returning 201.
+      3) Should get a PNG photo, returning 200.
+      ✓ Should delete a PNG photo, returning 201.
+      4) Should get default photo, returning 201.
+
+  Test search of auctions.
+    [Script: assess.p.auctions.search.js]
+    ✓ Should return all auctions i.e. execute /auctions with no query parameters
+    ✓ Should return auctions containing the word "umbrella" i.e. execute /auctions with q=umbrella
+    ✓ Should return 4 auctions i.e. execute /auctions with count=4
+    ✓ Should return auctions i.e. execute /auctions with category-id=1 and count=2
+    ✓ Should return auctions for seller 2 i.e. execute /auctions with seller=2
+
+  Test auction history.
+    [Script: assess.q.bids.history.js]
+    ✓ Should return bid history of auction.
+
+  Test the successful getting of a user's details, with authenticated users.
+    [Script: assess.r.users.get.auth.succeed.js]
+    ✓ Should return user's own full details, with 200 status code.
+    ✓ Should return another user's  details, with 200 status code, but NOT email and accountBalance.
+
+  Test the unsuccessful getting of a user's details, with unauthenticated users.
+    [Script: assess.s.users.get.unauth.fail.js]
+    ✓ Should fail get request for user's details, with 4xx (e.g. 403) status code.
+
+  Testing successful concurrent log in of three users.
+    [Script: assess.t.concurrent.logins.js]
+    ✓ Should have three concurrent authorization tokens, each with a different value.
+
+  Test whether the passwords have been obfuscated in some way
+    [Script: assess.u.password.js]
+    5) If passwords are obfuscated, log in should fail on the login of a user from the original sample data
+
+
+  55 passing (7s)
+  5 failing
+
+  1) Manage the photos (JPEG and PNG) of an auction.
+       Tests for add (POST), get (GET) and delete (DELETE) a JPEG photo to the auction: POST /auction/id/photos.
+         Should GET a JPEG photo, returning 200.:
+     AssertionError: expected 'image/jpeg; charset=utf-8' to be one of [ 'image/png', 'image/jpeg' ]
+      at /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1/tests/assess.m.photos.success.js:88:62
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+  2) Manage the photos (JPEG and PNG) of an auction.
+       Tests for add (POST), get (GET) and delete (DELETE) a JPEG photo to the auction: POST /auction/id/photos.
+         Should GET default photo, returning 200.:
+     Error: Not Found
+      at Test.Request.callback (node_modules/superagent/lib/node/index.js:626:17)
+      at /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1/node_modules/superagent/lib/node/index.js:795:18
+      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:16:7)
+      at endReadableNT (_stream_readable.js:1055:12)
+      at _combinedTickCallback (internal/process/next_tick.js:138:11)
+      at process._tickCallback (internal/process/next_tick.js:180:9)
+
+  3) Manage the photos (JPEG and PNG) of an auction.
+       Tests for add (POST), get (GET) and delete (DELETE) a PNG photo to the auction: POST /auction/id/photos.
+         Should get a PNG photo, returning 200.:
+
+      AssertionError: expected header 'content-type' to have value image/png but got 'image/png; charset=utf-8'
+      + expected - actual
+
+      -image/png; charset=utf-8
+      +image/png
+      
+      at /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1/tests/assess.m.photos.success.js:149:41
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+  4) Manage the photos (JPEG and PNG) of an auction.
+       Tests for add (POST), get (GET) and delete (DELETE) a PNG photo to the auction: POST /auction/id/photos.
+         Should get default photo, returning 201.:
+     Error: Not Found
+      at Test.Request.callback (node_modules/superagent/lib/node/index.js:626:17)
+      at /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1/node_modules/superagent/lib/node/index.js:795:18
+      at IncomingMessage.<anonymous> (node_modules/superagent/lib/node/parsers/json.js:16:7)
+      at endReadableNT (_stream_readable.js:1055:12)
+      at _combinedTickCallback (internal/process/next_tick.js:138:11)
+      at process._tickCallback (internal/process/next_tick.js:180:9)
+
+  5) Test whether the passwords have been obfuscated in some way
+       If passwords are obfuscated, log in should fail on the login of a user from the original sample data:
+     Error: Login accepted, suggesting password is not obfuscated e.g. not hashed & salted!
+      at /home/cosc/student/jam357/Desktop/seng365_2018_apitest_v1/seng365_2018_apitest_v1/tests/assess.u.password.js:48:23
+      at <anonymous>
+      at process._tickCallback (internal/process/next_tick.js:188:7)
+
+
+
