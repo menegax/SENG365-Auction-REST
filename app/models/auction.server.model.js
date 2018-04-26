@@ -2,124 +2,248 @@ const db = require('../../config/db');
 
 //view auctions, sorted from most recent to least recent
 exports.getAll = function(startIndex, count, q, categoryId, seller, bidder, done) {
-    if (bidder !== undefined) {
-        if (seller !== undefined) {
-            if (categoryId !== undefined) {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+    if (count != undefined) {
+        if (bidder !== undefined) {
+            if (seller !== undefined) {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
                  auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
                  AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
                   LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND A.auction_userid = 
                   "${seller}" AND B.bid_userid = "${bidder}" GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            } else {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
                 auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
                  AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
                   LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE A.auction_userid = "${seller}" AND B.bid_userid = "${bidder}" 
                   GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            }
-        } else {
-            if (categoryId !== undefined) {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                }
+            } else {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
                  auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
                  AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
                   LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND B.bid_userid = "${bidder}" 
                   GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            } else {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
                 auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
                  AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
                   LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE B.bid_userid = "${bidder}" GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                }
             }
-        }
-    } else {
-        if (seller !== undefined) {
-            if (categoryId !== undefined) {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+        } else {
+            if (seller !== undefined) {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
              auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
              AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
               LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND A.auction_userid = 
               "${seller}" GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            } else {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
             auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
              AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
               LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE A.auction_userid = "${seller}" GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            }
-        } else {
-            if (categoryId !== undefined) {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                }
+            } else {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
              auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
              AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
               LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
-            } else {
-                db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
             auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
              AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
               LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) GROUP BY auction_id`, function (err, rows) {
-                    if (err) return done(500, "Internal server error", err);
+                        if (err) return done(500, "Internal server error", err);
 
-                    if (startIndex !== undefined) {
-                        return done(200, "OK", rows.slice(startIndex, rows.length));
-                    } else {
-                        return done(200, "OK", rows);
-                    }
-                });
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, startIndex+count));
+                        } else {
+                            return done(200, "OK", rows.slice(0, count));
+                        }
+                    });
+                }
+            }
+        }
+    } else {
+        if (bidder !== undefined) {
+            if (seller !== undefined) {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+                 auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
+                 AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+                  LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND A.auction_userid = 
+                  "${seller}" AND B.bid_userid = "${bidder}" GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
+                 AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+                  LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE A.auction_userid = "${seller}" AND B.bid_userid = "${bidder}" 
+                  GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                }
+            } else {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+                 auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
+                 AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+                  LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND B.bid_userid = "${bidder}" 
+                  GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+                auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
+                 AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+                  LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE B.bid_userid = "${bidder}" GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                }
+            }
+        } else {
+            if (seller !== undefined) {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+             auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
+             AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+              LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" AND A.auction_userid = 
+              "${seller}" GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+            auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
+             AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+              LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE A.auction_userid = "${seller}" GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                }
+            } else {
+                if (categoryId !== undefined) {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId,
+             auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate 
+             AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+              LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) WHERE C.category_id = "${categoryId}" GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                } else {
+                    db.get_pool().query(`SELECT auction_id AS id, category_title AS categoryTitle, auction_categoryid AS categoryId, 
+            auction_title AS title, auction_reserveprice AS reservePrice, auction_startingdate AS startDateTime, auction_endingdate
+             AS endDateTime, MAX(bid_amount) AS currentBid FROM auction A JOIN category C ON (A.auction_categoryid = C.category_id)
+              LEFT OUTER JOIN bid B ON (A.auction_id = B.bid_auctionid) GROUP BY auction_id`, function (err, rows) {
+                        if (err) return done(500, "Internal server error", err);
+
+                        if (startIndex !== undefined) {
+                            return done(200, "OK", rows.slice(startIndex, rows.length));
+                        } else {
+                            return done(200, "OK", rows);
+                        }
+                    });
+                }
             }
         }
     }
@@ -260,17 +384,16 @@ exports.view = function(auctionId, done) {
 };
 
 //make bid on auction
-exports.make = function(auth, amount, bidTime, bidding, auctionId, done) {
+exports.make = function(auth, amount, bidTime, auctionId, date, done) {
     db.get_pool().query(`SELECT user_id AS id FROM auction_user WHERE user_token = "${auth}"`, function(err, result) {
         if (err) return done(500, "Internal server error", err);
         if (result.length === 0) return done(401, "Unauthorized.", {"ERROR": "You are unauthorized"});
         let userId = result[0].id;
-        db.get_pool().query(`SELECT * FROM auction WHERE auction_id = "${auctionId}"`, function(err, rows){
+        db.get_pool().query(`SELECT auction_endingdate AS ending FROM auction WHERE auction_id = "${auctionId}"`, function(err, rows){
             if (err) return done(500, "Internal server error", err);
-            console.log(rows.length);
+            if (rows[0].ending < date) { return done(400, "Bad request", {"ERROR": "Ending date has passed"}); }
 
             if (rows.length === 0) return done(404, "Not found", {"ERROR": "Could not find the auction with given auction id"});
-            // console.log("ENDINGDATE == " + rows[0].id.toString());
             db.get_pool().query(`SELECT MAX(FLOOR(bid_amount)) AS amount FROM bid WHERE bid_auctionid = "${auctionId}"`, function(err, result) {
                 if (err) return done(500, "Internal server error", err);
                 if (result.length === 0) {

@@ -12,9 +12,9 @@ exports.getOne = function(res, auctionId, done) {
             if (err) return done(500, "Internal server error", err);
             if (rows.length !== 0) {
                 if (fs.existsSync(`./images/${auctionId}.png`)) {
-                    res.header('Content-type', 'image/jpeg');
-                } else {
                     res.header('Content-type', 'image/png');
+                } else {
+                    res.header('Content-type', 'image/jpeg');
                 }
                 done(200, "OK", filePath + appDir + rows[0].URI);
             } else {

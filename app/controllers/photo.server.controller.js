@@ -5,8 +5,10 @@ exports.retrieve = function(req, res){
     let auctionId = req.params.auctionId;
     Photo.getOne(res, auctionId, function(statusCode, statusMessage, result) {
         res.status(statusCode);
+        // .header('Content-Type', 'image/png').end(result);
         res.statusMessage = statusMessage;
         res.json(result);
+        // res.header('Content-Type', 'image/png');
     });
 };
 

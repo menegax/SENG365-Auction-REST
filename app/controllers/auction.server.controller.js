@@ -56,10 +56,6 @@ exports.create = function(req, res) {
         [auction_categoryid, auction_title, auction_description, starting, ending, auction_reservePrice, auction_startBid]
     ];
 
-    // console.log("starting= " + starting);
-    //
-    // console.log("auction_startTime== " + auction_startTime);
-
     Auction.insert(auth, values, create, function(statusCode, statusMessage, result) {
         res.status(statusCode);
         res.statusMessage = statusMessage;
@@ -140,7 +136,7 @@ exports.bid = function(req, res){
     let dateTime = new Date();
     let bidTime = dateTime.toISOString();
 
-    Auction.make(auth, amount, bidTime, id, dateTime.getTime()/1000, function(statusCode, statusMessage, result) {
+    Auction.make(auth, amount, bidTime, id, dateTime.getTime(), function(statusCode, statusMessage, result) {
         res.status(statusCode);
         res.statusMessage = statusMessage;
         res.json(result);

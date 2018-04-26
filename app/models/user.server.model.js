@@ -79,26 +79,26 @@ exports.getOne = function(userId, auth, done) {
     db.get_pool().query(`SELECT user_id as id FROM auction_user WHERE user_token = "${auth}"`, function (err, rows) {
         if (err) return done(500, "Internal server error", err);
         if (rows.length === 0) {
-            db.get_pool().query('SELECT user_username AS username, user_givenname AS givenName, user_familyname AS familyName ' +
-                'FROM auction_user WHERE user_id = ?', userId, function (err, rows) {
-                if (err) return done(500, "Internal server error", err);
-                if (rows.length === 0) return done(404, "Not found", {"ERROR": "User with given id was not found"});
-                done(200, "OK", rows);
-            });
+            // db.get_pool().query('SELECT user_username AS username, user_givenname AS givenName, user_familyname AS familyName ' +
+            //     'FROM auction_user WHERE user_id = ?', userId, function (err, rows) {
+            //     if (err) return done(500, "Internal server error", err);
+            //     if (rows.length === 0) return done(404, "Not found", {"ERROR": "User with given id was not found"});
+            done(403, "Forbidden", {"ERROR": "You are not authorized!"});
+            // });
         } else {
             if (rows[0].id.toString() === userId.toString()) {
                 db.get_pool().query('SELECT user_username AS username, user_givenname AS givenName, user_familyname AS familyName, ' +
                     'user_email AS email, FLOOR(user_accountbalance) AS accountBalance FROM auction_user WHERE user_id = ?', userId, function (err, rows) {
                     if (err) return done(500, "Internal server error", err);
                     if (rows.length === 0) return done(404, "Not found", {"ERROR": "User with given id was not found"});
-                    done(200, "OK", rows);
+                    done(200, "OK", rows[0]);
                 });
             } else {
                 db.get_pool().query('SELECT user_username AS username, user_givenname AS givenName, user_familyname AS familyName ' +
                     'FROM auction_user WHERE user_id = ?', userId, function (err, rows) {
                     if (err) return done(500, "Internal server error", err);
                     if (rows.length === 0) return done(404, "Not found", {"ERROR": "User with given id was not found"});
-                    done(200, "OK", rows);
+                    done(200, "OK", rows[0]);
                 });
             }
         }
